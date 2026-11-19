@@ -19,7 +19,7 @@ You don't need to compile anything. Download the zip for your game version and d
 
 ### 1. Download the right zip
 
-Download it from the [`dist/`](dist) folder of this repository (or from the Releases page, if there is one):
+Download it from the [`dist/`](dist) folder of this repository (or from the [Releases](https://github.com/Cametendo/b-s-Monkey-D-luffy-abilities/releases) page, if there is one):
 
 | Your game version | Download |
 |---|---|
