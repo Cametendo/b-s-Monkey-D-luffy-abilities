@@ -1,0 +1,9 @@
+bin/
+obj/
+.vs/
+*.user
+# Game assemblies are copyrighted - never commit them.
+refs/
+build/out/
+tools/**/bin/
+tools/**/obj/

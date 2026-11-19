@@ -1,0 +1,47 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Build:  dotnet build -c Release -p:GameVersion=V1  -p:BaSManaged="<game>/BladeAndSorcery_Data/Managed"
+            dotnet build -c Release -p:GameVersion=U12 -p:BaSManaged="<U12 game>/BladeAndSorcery_Data/Managed"
+
+    GameVersion selects the API flavour (see Compat/GameCompat.cs):
+      U12 -> Blade & Sorcery U12.x  (mana)
+      V1  -> Blade & Sorcery 1.0+   (focus)
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <AssemblyName>LuffyAbilities</AssemblyName>
+    <RootNamespace>LuffyAbilities</RootNamespace>
+    <LangVersion>9.0</LangVersion>
+    <Nullable>disable</Nullable>
+    <Deterministic>true</Deterministic>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <Version>1.0.0</Version>
+    <GameVersion Condition="'$(GameVersion)' == ''">V1</GameVersion>
+    <OutputPath>bin\$(Configuration)\$(GameVersion)\</OutputPath>
+    <IntermediateOutputPath>obj\$(Configuration)\$(GameVersion)\</IntermediateOutputPath>
+    <DefineConstants Condition="'$(GameVersion)' == 'U12'">$(DefineConstants);BAS_U12</DefineConstants>
+    <DefineConstants Condition="'$(GameVersion)' == 'V1'">$(DefineConstants);BAS_V1</DefineConstants>
+    <DebugType>none</DebugType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net472" Version="1.0.3" PrivateAssets="all" />
+  </ItemGroup>
+
+  <!-- Game assemblies: referenced from your own game install, never copied to the output. -->
+  <ItemGroup Condition="'$(BaSManaged)' != ''">
+    <Reference Include="ThunderRoad"                         HintPath="$(BaSManaged)\ThunderRoad.dll" Private="false" />
+    <Reference Include="UnityEngine"                         HintPath="$(BaSManaged)\UnityEngine.dll" Private="false" />
+    <Reference Include="UnityEngine.CoreModule"              HintPath="$(BaSManaged)\UnityEngine.CoreModule.dll" Private="false" />
+    <Reference Include="UnityEngine.PhysicsModule"           HintPath="$(BaSManaged)\UnityEngine.PhysicsModule.dll" Private="false" />
+    <Reference Include="UnityEngine.ParticleSystemModule"    HintPath="$(BaSManaged)\UnityEngine.ParticleSystemModule.dll" Private="false" />
+  </ItemGroup>
+
+  <Target Name="CheckBaSManaged" BeforeTargets="ResolveAssemblyReferences" Condition="'$(BaSManaged)' == ''">
+    <Error Text="Set BaSManaged to your '&lt;Blade &amp; Sorcery&gt;/BladeAndSorcery_Data/Managed' folder, e.g. dotnet build -p:BaSManaged=&quot;C:\Steam\steamapps\common\Blade &amp; Sorcery\BladeAndSorcery_Data\Managed&quot;" />
+  </Target>
+
+</Project>
